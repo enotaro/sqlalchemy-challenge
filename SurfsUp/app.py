@@ -26,9 +26,6 @@ Base.prepare(autoload_with=engine)
 Measurement = Base.classes.measurement
 Station = Base.classes.station
 
-# Create our session (link) from Python to the DB
-session = Session(engine)
-
 #################################################
 # Flask Setup
 #################################################
@@ -54,35 +51,48 @@ def welcome():
 
 @app.route("/api/v1.0/precipitation")
 def precipitation():
-    
+    # Create our session (link) from Python to the DB
+    session = Session(engine)
+
+    session.close()
 
     return jsonify()
 
 @app.route("/api/v1.0/stations")
 def stations():
-    
+    # Create our session (link) from Python to the DB
+    session = Session(engine)   
+
+    session.close()
 
     return jsonify()
 
 @app.route("/api/v1.0/tobs")
 def tobs():
-    
+    # Create our session (link) from Python to the DB
+    session = Session(engine)   
+
+    session.close()
 
     return jsonify()
 
 @app.route("/api/v1.0/<start>")
 def start():
-    
+    # Create our session (link) from Python to the DB
+    session = Session(engine)   
+
+    session.close()
 
     return jsonify()
 
 @app.route("/api/v1.0/<start>/<end>")
 def startend():
-   
+   # Create our session (link) from Python to the DB
+    session = Session(engine)   
+
+    session.close()
 
     return jsonify()
-
-session.close()
 
 if __name__ == '__main__':
     app.run(debug=True)
