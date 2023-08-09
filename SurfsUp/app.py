@@ -31,11 +31,10 @@ Station = Base.classes.station
 #################################################
 app = Flask(__name__)
 
-
-
 #################################################
 # Flask Routes
 #################################################
+
 # index route
 @app.route("/")
 def welcome():
@@ -49,6 +48,7 @@ def welcome():
         f"/api/v1.0/<start>/<end>"
     )
 
+# precipitation route
 @app.route("/api/v1.0/precipitation")
 def precipitation():
     # Create our session (link) from Python to the DB
@@ -58,6 +58,7 @@ def precipitation():
 
     return jsonify()
 
+# stations route
 @app.route("/api/v1.0/stations")
 def stations():
     # Create our session (link) from Python to the DB
@@ -67,6 +68,7 @@ def stations():
 
     return jsonify()
 
+# tobs route
 @app.route("/api/v1.0/tobs")
 def tobs():
     # Create our session (link) from Python to the DB
@@ -76,6 +78,7 @@ def tobs():
 
     return jsonify()
 
+# start route
 @app.route("/api/v1.0/<start>")
 def start():
     # Create our session (link) from Python to the DB
@@ -85,6 +88,7 @@ def start():
 
     return jsonify()
 
+# start/end route
 @app.route("/api/v1.0/<start>/<end>")
 def startend():
    # Create our session (link) from Python to the DB
