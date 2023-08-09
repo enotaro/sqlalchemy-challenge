@@ -52,9 +52,23 @@ def welcome():
 @app.route("/api/v1.0/precipitation")
 def precipitation():
     # Create our session (link) from Python to the DB
-    session = Session(engine)
+    session = Session(engine)  
 
+    # Create query
+    one_year_from_last = dt.date(2017, 8, 23) - dt.timedelta(days = 365)
+    precip_data = session.query(Measurement.date, Measurement.prcp).\
+    filter(Measurement.date >= one_year_from_last).all()
+
+    # Close session
     session.close()
+
+     # Create a dictionary from the row data and append to a list of precip
+    precip = []
+    for date, prcp in precip_data:
+        precip_dict = {}
+        precip_dict["date"] = date
+        precip_dict["prcp"] = prcp
+        precip.append(precip_dict)
 
     return jsonify()
 
@@ -62,11 +76,23 @@ def precipitation():
 @app.route("/api/v1.0/stations")
 def stations():
     # Create our session (link) from Python to the DB
-    session = Session(engine)   
+    session = Session(engine)  
+    
+    # Create query
+    station_data = session.query(Station.station, Station.name).all()
 
+    # Close session
     session.close()
 
-    return jsonify()
+     # Create a dictionary from the row data and append to a list of all stations
+    all_stations = []
+    for station, name in station_data:
+        station_dict = {}
+        station_dict["station"] = station
+        station_dict["name"] = name
+        all_stations.append(station_dict)
+    
+     return jsonify(all_stations)
 
 # tobs route
 @app.route("/api/v1.0/tobs")
@@ -74,9 +100,23 @@ def tobs():
     # Create our session (link) from Python to the DB
     session = Session(engine)   
 
+    # Create query
+    one_year_from_last = dt.date(2017, 8, 23) - dt.timedelta(days = 365)
+    most_active_last_year = session.query(Measurement.tobs).\
+                                        filter(Measurement.date >= one_year_from_last).\
+                                        filter(Measurement.station == "USC00519281").\
+                                        order_by(Measurement.date).all()
+
     session.close()
 
-    return jsonify()
+    # Create a dictionary from the row data and append to a list of data for most active station
+    acitve_year = []
+    for tobs in most_active_last_year:
+        tobs_dict = {}
+        tobs_dict["tobs"] = tobs
+        active_year.append(tobs_dict)
+
+    return jsonify(tobs_dict)
 
 # start route
 @app.route("/api/v1.0/<start>")
@@ -84,9 +124,9 @@ def start():
     # Create our session (link) from Python to the DB
     session = Session(engine)   
 
-    session.close()
+    
 
-    return jsonify()
+    return jsonify(precip)
 
 # start/end route
 @app.route("/api/v1.0/<start>/<end>")
@@ -94,6 +134,9 @@ def startend():
    # Create our session (link) from Python to the DB
     session = Session(engine)   
 
+    # Create query
+
+    # Close session
     session.close()
 
     return jsonify()
