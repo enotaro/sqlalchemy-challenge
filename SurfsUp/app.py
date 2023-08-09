@@ -110,7 +110,7 @@ def tobs():
     session.close()
 
     # Create a dictionary from the row data and append to a list of data for most active station
-    acitve_year = []
+    active_year = []
     for tobs in most_active_last_year:
         tobs_dict = {}
         tobs_dict["tobs"] = tobs
@@ -127,8 +127,24 @@ def start():
     # Accept start date as a parameter from the URL
     start_date = dt.datetime.strptime(start, "%Y-%m-%d")
     
+    # Create query
+    start_values = session.query(func.min(Measurement.tobs),
+                            func.max(Measurement.tobs),
+                            func.avg(Measurement.tobs)).\
+                            filter(Measurement.date >= start_date).all()
 
-    return jsonify(precip)
+    # Close session
+    session.close()
+
+    all_values_start = []
+    for start_min, start_max, start_avg in start_values:
+        start_values_dict = {}
+        start_values_dict["min"] = start_min
+        start_values_dict["max"] = start_max
+        start_values_dict["avg"] = start_avg
+        all_values_start.append(start_values_dict)
+
+    return jsonify(all_values_start)
 
 # start/end route
 @app.route("/api/v1.0/<start>/<end>")
@@ -141,11 +157,23 @@ def startend():
     end_date = dt.datetime.strptime(end, "%Y-%m-%d")
 
     # Create query
+    start_end_values = session.query(func.min(Measurement.tobs),
+                            func.max(Measurement.tobs),
+                            func.avg(Measurement.tobs)).\
+                            filter(Measurement.date >= start_date and Measurement.date <= end_date).all()
 
     # Close session
     session.close()
 
-    return jsonify()
+    all_values_start_end = []
+    for start_end_min, start_end_max, start_end_avg in start_end_values:
+        start_end_values_dict = {}
+        start_end_values_dict["min"] = start_end_min
+        start_end_values_dict["max"] = start_end_max
+        start_end_values_dict["avg"] = start_end_avg
+        all_values_start_end.append(start__endvalues_dict)
+
+    return jsonify(all_values_start_end)
 
 if __name__ == '__main__':
     app.run(debug=True)
