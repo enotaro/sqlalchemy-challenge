@@ -52,5 +52,37 @@ def welcome():
         f"/api/v1.0/<start>/<end>"
     )
 
+@app.route("/api/v1.0/precipitation")
+def precipitation():
+    
+
+    return jsonify()
+
+@app.route("/api/v1.0/stations")
+def stations():
+    
+
+    return jsonify()
+
+@app.route("/api/v1.0/tobs")
+def tobs():
+    
+
+    return jsonify()
+
+@app.route("/api/v1.0/<start>")
+def start():
+    
+
+    return jsonify()
+
+@app.route("/api/v1.0/<start>/<end>")
+def startend():
+   
+
+    return jsonify()
+
+session.close()
+
 if __name__ == '__main__':
     app.run(debug=True)
