@@ -124,6 +124,8 @@ def start():
     # Create our session (link) from Python to the DB
     session = Session(engine)   
 
+    # Accept start date as a parameter from the URL
+    start_date = dt.datetime.strptime(start, "%Y-%m-%d")
     
 
     return jsonify(precip)
@@ -132,7 +134,11 @@ def start():
 @app.route("/api/v1.0/<start>/<end>")
 def startend():
    # Create our session (link) from Python to the DB
-    session = Session(engine)   
+    session = Session(engine)  
+
+    # Accept start and end dates as parameters from the URL
+    start_date = dt.datetime.strptime(start, "%Y-%m-%d")
+    end_date = dt.datetime.strptime(end, "%Y-%m-%d")
 
     # Create query
 
